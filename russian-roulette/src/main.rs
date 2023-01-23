@@ -1,13 +1,27 @@
-use rand::Rng;
-
-use crate::revolver::cylinder::create_cylinder;
-use crate::revolver::revolver::Revolver;
-
-pub mod revolver;
+use russian_roulette::{
+    game::Game,
+    player::Player,
+    revolver::{cylinder::create_cylinder, Revolver},
+    ui::notify_game_starts,
+};
 
 fn main() {
-    let mut rng = rand::thread_rng();
-    let cylinder = create_cylinder(rng.gen(), &mut rng);
+    let players = vec![
+        Player {
+            name: String::from("Andrew"),
+            ..Default::default()
+        },
+        Player {
+            name: String::from("Michael"),
+            ..Default::default()
+        },
+    ];
+    let cylinder = create_cylinder(10);
     let mut revolver = Revolver { cylinder };
-    revolver.reload(&mut rng);
+    let game = Game {
+        players,
+        revolver: &mut revolver,
+    };
+    notify_game_starts(&game.players);
+    game.play()
 }
