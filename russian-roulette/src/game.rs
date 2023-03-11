@@ -30,7 +30,7 @@ impl<'a> Game<'a> {
                                 player.client.as_ref().notify_blank_shoot();
                                 break;
                             }
-                            _ => println!("Incorrect input"),
+                            _ => player.client.send_message("Incorrect input, try again"),
                         }
                     }
                 }

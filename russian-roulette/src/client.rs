@@ -34,6 +34,7 @@ mod messages {
 pub struct AnonymousClient {}
 
 pub trait Client {
+    fn send_message(&self, message: &str);
     fn get_player_turn(&self, user_id: &str) -> String;
     fn notify_game_starts(&self, players: &Vec<Player>);
     fn notify_player_is_dead(&self, user_id: &str);
@@ -53,24 +54,27 @@ impl LocalClient {
 }
 
 impl Client for LocalClient {
+    fn send_message(&self, message: &str) {
+        println!("{}", message);
+    }
     fn get_player_turn(&self, name: &str) -> String {
         let message = messages::generate_get_player_turn_message(name);
-        println!("{}", message);
+        self.send_message(message.as_str());
         LocalClient::get_input()
     }
 
     fn notify_game_starts(&self, players: &Vec<Player>) {
         let message = messages::generate_game_starts_message(players);
-        println!("{}", message);
+        self.send_message(message.as_str());
     }
 
     fn notify_player_is_dead(&self, name: &str) {
         let message = messages::generate_player_is_dead_message(name);
-        println!("{}", message)
+        self.send_message(message.as_str());
     }
 
     fn notify_blank_shoot(&self) {
         let message = messages::generate_blank_shoot_message();
-        println!("{}", message)
+        self.send_message(message.as_str());
     }
 }
