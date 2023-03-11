@@ -9,12 +9,25 @@ pub struct Game<'a> {
 }
 
 impl<'a> Game<'a> {
+    fn check_winner(&self) -> Option<&Player> {
+        let alive: Vec<&Player> = self.players.iter().filter(|player| player.alive).collect();
+        if alive.len() == 1 {
+            return self.players.first();
+        } else {
+            None
+        }
+    }
     pub fn play(&mut self) {
         loop {
-            let alive: Vec<&Player> = self.players.iter().filter(|player| player.alive).collect();
-            if alive.len() == 0 {
-                println!("Bye, losers!");
-                break;
+            let the_winner = self.check_winner();
+            match the_winner {
+                None => (),
+                Some(player) => {
+                    player
+                        .client
+                        .send_message(&format!("You won, {}", player.name));
+                    return;
+                }
             };
             for player in &mut self.players {
                 if player.alive {
