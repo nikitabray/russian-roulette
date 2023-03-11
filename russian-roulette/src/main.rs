@@ -2,7 +2,6 @@ use russian_roulette::{
     game::Game,
     player::Player,
     revolver::{cylinder::create_cylinder, Revolver},
-    ui::notify_game_starts,
 };
 
 fn main() {
@@ -18,10 +17,9 @@ fn main() {
     ];
     let cylinder = create_cylinder(10);
     let mut revolver = Revolver { cylinder };
-    let game = Game {
+    let mut game = Game {
         players,
         revolver: &mut revolver,
     };
-    notify_game_starts(&game.players);
     game.play()
 }
