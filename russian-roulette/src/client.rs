@@ -1,18 +1,16 @@
-use crate::player::Player;
 use std::io;
-
+use crate::player::Player;
 mod messages {
-    use crate::player::Player;
     use colored::Colorize;
 
     pub fn generate_get_player_turn_message(username: &str) -> String {
         String::from(format!("Print your turn, {}\n1. Shoot\n2. Spin the wheel", username))
     }
 
-    pub fn generate_game_starts_message(players: &Vec<Player>) -> String {
+    pub fn generate_game_starts_message(players: Vec<&str>) -> String {
         let mut message = String::from("The russian roulette game starts now! Welcome, ");
         for player in players.iter() {
-            message.push_str(&format!("{} ", player.name));
+            message.push_str(&format!("{} ", player));
         }
         message.push_str("\n");
         message
@@ -22,7 +20,7 @@ mod messages {
         String::from(format!(
             "Player {} is {}",
             username,
-            format!("dead").bold().red()
+            "dead".bold().red()
         ))
     }
 
@@ -36,14 +34,18 @@ pub struct AnonymousClient {}
 pub trait Client {
     fn send_message(&self, message: &str);
     fn get_player_turn(&self, user_id: &str) -> String;
-    fn notify_game_starts(&self, players: &Vec<Player>);
+    fn notify_game_starts(&self, players: Vec<&str>);
     fn notify_player_is_dead(&self, user_id: &str);
     fn notify_blank_shoot(&self);
 }
 
-pub struct LocalClient {}
+pub struct LocalClient {
+}
 
 impl LocalClient {
+    pub fn new() -> Self {
+        LocalClient {  }
+    }
     fn get_input() -> String {
         let mut inp = String::new();
         io::stdin()
@@ -63,7 +65,7 @@ impl Client for LocalClient {
         LocalClient::get_input()
     }
 
-    fn notify_game_starts(&self, players: &Vec<Player>) {
+    fn notify_game_starts(&self, players: Vec<&str>) {
         let message = messages::generate_game_starts_message(players);
         self.send_message(message.as_str());
     }

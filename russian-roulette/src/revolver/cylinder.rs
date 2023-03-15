@@ -9,6 +9,14 @@ pub struct Cylinder {
 }
 
 impl Cylinder {
+    pub fn new(size: u32) -> Self {
+        let deadly_cartridge = rand::thread_rng().gen_range(1..size);
+        println!("Deadly cartridge is at position {}", deadly_cartridge);
+        Cylinder {size, 
+        deadly_cartridge,
+        current_cartridge: 1,
+        }
+    }
     pub fn spin(self: &mut Cylinder) {
         self.current_cartridge = rand::thread_rng().gen_range(1..self.size)
     }
@@ -26,13 +34,5 @@ impl Cylinder {
             true => Shoot::DEADLY,
             false => Shoot::BLANK,
         }
-    }
-}
-
-pub fn create_cylinder(size: u32) -> Cylinder {
-    Cylinder {
-        size,
-        deadly_cartridge: rand::thread_rng().gen_range(1..size),
-        current_cartridge: 1,
     }
 }

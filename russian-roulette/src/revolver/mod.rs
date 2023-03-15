@@ -1,4 +1,5 @@
 pub mod cylinder;
+use cylinder::Cylinder;
 
 pub enum Shoot {
     BLANK,
@@ -6,10 +7,13 @@ pub enum Shoot {
 }
 
 pub struct Revolver {
-    pub cylinder: cylinder::Cylinder,
+    pub cylinder: Cylinder,
 }
 
 impl Revolver {
+    pub fn new(cylinder: Cylinder) -> Self {
+        Revolver {cylinder}
+    }
     pub fn spin(self: &mut Revolver) {
         self.cylinder.spin()
     }
