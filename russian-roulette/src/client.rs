@@ -29,7 +29,8 @@ mod messages {
     }
 }
 
-pub struct AnonymousClient {}
+pub struct AnonymousClient {
+}
 
 pub trait Client {
     fn send_message(&self, message: &str);
@@ -80,3 +81,4 @@ impl Client for LocalClient {
         self.send_message(message.as_str());
     }
 }
+
